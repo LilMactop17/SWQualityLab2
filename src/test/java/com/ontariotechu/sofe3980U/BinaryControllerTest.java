@@ -56,5 +56,35 @@ public class BinaryControllerTest {
                 .andExpect(model().attribute("result", "1110"))
                 .andExpect(model().attribute("operand1", "111"));
     }
+    @Test
+    public void testAddition() throws Exception {
+        this.mvc.perform(post("/").param("operand1","10").param("operator","+").param("operand2","11"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("result"))
+                .andExpect(model().attribute("result", "101"));
+    }
 
+    @Test
+    public void testMultiplication() throws Exception {
+        this.mvc.perform(post("/").param("operand1","10").param("operator","*").param("operand2","11"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("result"))
+                .andExpect(model().attribute("result", "110"));
+    }
+
+    @Test
+    public void testLogicalAnd() throws Exception {
+        this.mvc.perform(post("/").param("operand1","1010").param("operator","&").param("operand2","1100"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("result"))
+                .andExpect(model().attribute("result", "1000"));
+    }
+    @Test
+    public void testLogicalOr() throws Exception {
+        // Testing 1010 | 1100 = 1110 in the UI
+        this.mvc.perform(post("/").param("operand1","1010").param("operator","|").param("operand2","1100"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("result"))
+                .andExpect(model().attribute("result", "1110"));
+    }
 }
